@@ -1,0 +1,1 @@
+alarm[0] = 8 * room_speed; // se destruye a los 8 segundos si no choca antes

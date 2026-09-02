@@ -1,20 +1,36 @@
 // --- Variables de movimiento ---
-hsp = 0;          // horizontal speed
-vsp = 0;          // vertical speed
-move_spd = 4;     // velocidad al correr
-grav = 0.5;       // gravedad
-jump_spd = -9;    // fuerza de salto
-face = 1;         // 1 = derecha, -1 = izquierda
+hsp = 0;
+vsp = 0;
+move_spd = 4;
+grav = 0.5;
+jump_spd = -9;
+face = 1;
 
 // --- Estado del personaje ---
-estado = "idle";  // idle, run, jump, fall, dash
+estado = "idle";  // idle, run, jump, fall, dash, wall_slide, attack
 
 // --- Dash ---
 dash_spd = 8;
 dash_time = 0;
-dash_time_max = 10;   // duración del dash en frames
+dash_time_max = 10;
 dash_cooldown = 0;
 dash_cooldown_max = 20;
+dash_jump_boost = 1.3;
 
 // --- Control de suelo ---
 on_ground = false;
+
+// --- Wall Jump / Wall Slide ---
+wall_slide_spd = 1.5;
+wall_jump_hsp = 6;
+wall_jump_vsp = -10;
+on_wall = false;
+wall_dir = 0;
+wall_jump_lock = 0;
+wall_jump_lock_max = 2;
+
+// --- Sistema de armas ---
+arma = "espada";
+attack_time = 0;
+attack_duration = 15;
+bullet_spawned = false;
