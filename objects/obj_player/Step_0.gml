@@ -29,34 +29,46 @@ if (!on_ground) {
 
 var _wall_sliding = on_wall && !on_ground && vsp >= 0 && (_move == wall_dir);
 
-// --- Ataque (en suelo o aire, no durante dash ni otro ataque) ---
-if (_attack && estado != "attack" && estado != "dash") {
-    estado = "attack";
+// --- Ataque (en suelo, aire o pegado a pared) ---
+var _can_attack = (estado != "attack" && estado != "dash");
+var _cooldown_ok = _wall_sliding || (attack_cooldown <= 0);
+
+if (_attack && _can_attack && _cooldown_ok) {
     attack_time = attack_duration;
-    bullet_spawned = false;
+
+    var _atk_dir = _wall_sliding ? -wall_dir : face;
+
+    show_debug_message("wall_sliding: " + string(_wall_sliding) + " | wall_dir: " + string(wall_dir) + " | atk_dir: " + string(_atk_dir)); // DEBUG TEMPORAL
+
+    if (!_wall_sliding) {
+        estado = "attack";
+    }
 
     if (arma == "espada") {
-        var _sword = instance_create_layer(x + (face * 15), y - 15, "Instances", obj_sword);
-        _sword.image_xscale = -face;
+        var _sword = instance_create_layer(x + (_atk_dir * 15), y - 15, "Instances", obj_sword);
+        _sword.image_xscale = -_atk_dir;
         _sword.lifetime = attack_duration;
         _sword.owner = id;
+    } else if (arma == "disparo") {
+        var _bullet = instance_create_layer(x + (_atk_dir * 10), y - 20, "Instances", obj_bullet);
+        var _bullet_spd = 8;
+        _bullet.hspeed = _atk_dir * _bullet_spd;
+        _bullet.image_xscale = -_atk_dir;
+    }
+
+    if (!_wall_sliding) {
+        attack_cooldown = attack_cooldown_max;
     }
 }
 
 if (estado == "attack") {
-    if (arma == "disparo" && !bullet_spawned) {
-        var _bullet = instance_create_layer(x, y - 20, "Instances", obj_bullet);
-        var _bullet_spd = 8;
-        _bullet.hspeed = face * _bullet_spd;
-        _bullet.image_xscale = -face;
-        bullet_spawned = true;
-    }
-
     attack_time -= 1;
     if (attack_time <= 0) {
         estado = "idle";
     }
 }
+
+if (attack_cooldown > 0) attack_cooldown -= 1;
 
 // --- Salto ---
 var _dash_jump = false;
@@ -86,7 +98,7 @@ if (_jump && on_ground && estado != "attack") {
     _wall_sliding = false;
 }
 
-// --- Movimiento horizontal normal (ahora también funciona durante el ataque) ---
+// --- Movimiento horizontal normal ---
 if (wall_jump_lock > 0) {
     wall_jump_lock -= 1;
 } else if (estado != "dash" && !_dash_jump && !_wall_sliding) {
@@ -198,4 +210,22 @@ switch (estado) {
 
 if (sprite_index != _sprite_anterior) {
     image_index = 0;
+    wall_slide_intro_done = false;
+}
+
+// --- Control especial de animación para wall_slide ---
+if (estado == "wall_slide") {
+    var _total_frames = sprite_get_number(spr_zero_wall_slide);
+    var _loop_frames = 3;
+    var _loop_start = _total_frames - _loop_frames;
+
+    if (!wall_slide_intro_done) {
+        if (image_index >= _loop_start) {
+            wall_slide_intro_done = true;
+        }
+    } else {
+        if (image_index < _loop_start) {
+            image_index = _loop_start;
+        }
+    }
 }

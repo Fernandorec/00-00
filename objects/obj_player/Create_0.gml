@@ -28,9 +28,14 @@ on_wall = false;
 wall_dir = 0;
 wall_jump_lock = 0;
 wall_jump_lock_max = 2;
+wall_slide_intro_done = false;
 
 // --- Sistema de armas ---
 arma = "espada";
 attack_time = 0;
 attack_duration = 15;
 bullet_spawned = false;
+
+// --- Cooldown de ataque ---
+attack_cooldown = 0;
+attack_cooldown_max = 20; // ajusta a tu gusto
