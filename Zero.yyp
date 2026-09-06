@@ -47,6 +47,8 @@
     {"id":{"name":"spr_zero_wall_jump","path":"sprites/spr_zero_wall_jump/spr_zero_wall_jump.yy",},},
     {"id":{"name":"spr_zero_wall_slide","path":"sprites/spr_zero_wall_slide/spr_zero_wall_slide.yy",},},
     {"id":{"name":"Sprite14","path":"sprites/Sprite14/Sprite14.yy",},},
+    {"id":{"name":"tileset_level","path":"sprites/tileset_level/tileset_level.yy",},},
+    {"id":{"name":"TileSet_level_desing","path":"tilesets/TileSet_level_desing/TileSet_level_desing.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
