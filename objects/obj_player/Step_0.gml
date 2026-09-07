@@ -148,7 +148,20 @@ if (place_meeting(x + hsp, y, obj_solid)) {
     hsp = 0;
 }
 x += hsp;
+// --- Colisión con plataforma de una sola dirección ---
+on_platform = false;
 
+if (vsp >= 0 && place_meeting(x, y + vsp, obj_platform)) {
+    var _plat = instance_place(x, y + vsp, obj_platform);
+    // Compara dónde estaban los pies el frame ANTERIOR, no ahora
+    if ((yprevious + (bbox_bottom - y)) <= _plat.bbox_top + 4) {
+        while (!place_meeting(x, y + sign(vsp), obj_platform)) {
+            y += sign(vsp);
+        }
+        vsp = 0;
+        on_platform = true;
+    }
+}
 // --- Colisión vertical ---
 if (place_meeting(x, y + vsp, obj_solid)) {
     while (!place_meeting(x, y + sign(vsp), obj_solid)) {
@@ -163,8 +176,14 @@ x = round(x);
 y = round(y);
 
 // --- Recalcular on_ground ---
-on_ground = place_meeting(x, y+1, obj_solid);
+on_ground = place_meeting(x, y+1, obj_solid) || on_platform;
 
+if (!on_ground && vsp >= 0) {
+    var _plat_check = instance_place(x, y+1, obj_platform);
+    if (_plat_check != noone && bbox_bottom <= _plat_check.bbox_top + 4) {
+        on_ground = true;
+    }
+}
 // --- Actualizar estado (si no está en dash ni attack) ---
 if (estado != "dash" && estado != "attack") {
     if (_wall_sliding) {

@@ -27,6 +27,7 @@
   "resources":[
     {"id":{"name":"obj_boss","path":"objects/obj_boss/obj_boss.yy",},},
     {"id":{"name":"obj_bullet","path":"objects/obj_bullet/obj_bullet.yy",},},
+    {"id":{"name":"obj_platform","path":"objects/obj_platform/obj_platform.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
     {"id":{"name":"obj_solid","path":"objects/obj_solid/obj_solid.yy",},},
     {"id":{"name":"obj_sword","path":"objects/obj_sword/obj_sword.yy",},},
@@ -47,6 +48,9 @@
     {"id":{"name":"spr_zero_wall_jump","path":"sprites/spr_zero_wall_jump/spr_zero_wall_jump.yy",},},
     {"id":{"name":"spr_zero_wall_slide","path":"sprites/spr_zero_wall_slide/spr_zero_wall_slide.yy",},},
     {"id":{"name":"Sprite14","path":"sprites/Sprite14/Sprite14.yy",},},
+    {"id":{"name":"Sprite17","path":"sprites/Sprite17/Sprite17.yy",},},
+    {"id":{"name":"Sprite18","path":"sprites/Sprite18/Sprite18.yy",},},
+    {"id":{"name":"Sprite19","path":"sprites/Sprite19/Sprite19.yy",},},
     {"id":{"name":"tileset_level","path":"sprites/tileset_level/tileset_level.yy",},},
     {"id":{"name":"TileSet_level_desing","path":"tilesets/TileSet_level_desing/TileSet_level_desing.yy",},},
   ],
