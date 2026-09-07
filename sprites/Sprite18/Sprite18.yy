@@ -44,8 +44,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"Zero",
-    "path":"folders/Sprites/Zero.yy",
+    "name":"level",
+    "path":"folders/Sprites/level.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
