@@ -55,3 +55,7 @@ invincible_timer = 0;
 invincible_duration = 60; // 1 segundo de i-frames
 pillar_hit = false;
 lightning_hit = false;
+
+spd_base = 4;           // tu velocidad normal
+spd_multiplier = 1;     // 1 = normal, <1 = lento, >1 = rápido
+spd_multiplier_target = 1;

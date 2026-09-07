@@ -1,3 +1,7 @@
+// --- Multiplicador de velocidad por zonas de tiempo ---
+spd_multiplier = lerp(spd_multiplier, spd_multiplier_target, 0.1);
+spd_multiplier_target = 1; // se resetea cada frame; las zonas lo vuelven a fijar si sigues dentro
+
 // --- Invencibilidad ---
 if (invincible) {
     invincible_timer -= 1;
@@ -180,7 +184,7 @@ if (_jump && on_ground && estado != "attack") {
     }
 } else if (_jump && _wall_sliding) {
     vsp = wall_jump_vsp;
-    hsp = -wall_dir * wall_jump_hsp;
+	hsp = -wall_dir * wall_jump_hsp;
     face = -wall_dir;
     estado = "jump";
     _dash_jump = true;
@@ -192,7 +196,7 @@ if (_jump && on_ground && estado != "attack") {
 if (wall_jump_lock > 0) {
     wall_jump_lock -= 1;
 } else if (estado != "dash" && !_dash_jump && !_wall_sliding) {
-    hsp = _move * move_spd;
+    hsp = _move * move_spd * spd_multiplier;
     if (_move != 0) face = _move;
 } else if (_wall_sliding) {
     hsp = 0;
@@ -214,7 +218,7 @@ if (estado != "dash") {
 if (_dash && dash_cooldown <= 0 && estado != "dash" && estado != "attack") {
     estado = "dash";
     dash_time = dash_time_max;
-    hsp = face * dash_spd;
+    hsp = face * dash_spd * spd_multiplier;
     vsp = 0;
 }
 
@@ -361,3 +365,4 @@ _cam_x += (_target_cam_x - _cam_x) * cam_smooth;
 _cam_y += (_target_cam_y - _cam_y) * cam_smooth;
 
 camera_set_view_pos(_cam, _cam_x, _cam_y);
+
