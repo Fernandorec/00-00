@@ -1,4 +1,4 @@
-Br// --- Barra de vida de Zero ---
+// --- Barra de vida de Zero ---
 var _bar_w = 150;
 var _bar_h = 14;
 var _bar_x = 20;
