@@ -1,7 +1,94 @@
+// --- Invencibilidad ---
+if (invincible) {
+    invincible_timer -= 1;
+    if (invincible_timer <= 0) {
+        invincible = false;
+    }
+}
+
+// --- Detecta daño de peligros del jefe ---
+if (!invincible && hp > 0) {
+    var _dmg = 0;
+
+    // Dash y sweep del jefe (colisión directa con su cuerpo en esos estados)
+    if (instance_exists(obj_boss)) {
+        if ((obj_boss.boss_state == "dash" || obj_boss.boss_state == "sweep") && place_meeting(x, y, obj_boss)) {
+            _dmg = 10;
+        }
+    }
+
+    // Proyectiles del jefe
+    var _proj = instance_place(x, y, obj_boss_projectile);
+    if (_proj != noone) {
+        _dmg = 8;
+        instance_destroy(_proj);
+    }
+
+    // Pilares de tiempo (fase activa)
+    with (obj_time_pillar) {
+        if (triggered && other.x > x - pillar_width/2 && other.x < x + pillar_width/2) {
+            other.pillar_hit = true;
+        }
+    }
+    if (pillar_hit) {
+        _dmg = 8;
+        pillar_hit = false;
+    }
+
+    // Rayos giratorios (fase activa, no roja)
+    with (obj_lightning) {
+        if (warn_timer <= 0 && point_distance(x, y, other.x, other.y) < 20) {
+            other.lightning_hit = true;
+        }
+    }
+    if (lightning_hit) {
+        _dmg = 5;
+        lightning_hit = false;
+    }
+
+    if (_dmg > 0) {
+        hp -= _dmg;
+        invincible = true;
+        invincible_timer = invincible_duration;
+
+        if (hp <= 0) {
+            hp = 0;
+            room_restart();
+        }
+    }
+}
+
+// --- Revisa si algún círculo activo te está tocando (prioridad máxima) ---
+if (!frozen) {
+    with (obj_freeze_zone) {
+        if (active_hit) {
+            var _dist = point_distance(x, y, other.x, other.y);
+            if (_dist <= radius) {
+                other.frozen = true;
+                other.freeze_timer = 2 * room_speed;
+            }
+        }
+    }
+}
+
+// --- Chequeo de congelamiento (bloquea todo el input si está activo) ---
+if (frozen) {
+    freeze_timer -= 1;
+    hsp = 0;
+    vsp = 0;
+    estado = "idle";
+
+    if (freeze_timer <= 0) {
+        frozen = false;
+    }
+
+    exit;
+}
+
 // --- Input ---
 var _left  = keyboard_check(ord("A"));
 var _right = keyboard_check(ord("D"));
-var _jump  = keyboard_check_pressed(ord("J"));
+var _jump  = keyboard_check_pressed(vk_space);
 var _dash  = keyboard_check_pressed(ord("L"));
 var _switch_weapon = keyboard_check_pressed(ord("Q"));
 var _attack = keyboard_check_pressed(ord("K"));
@@ -38,15 +125,15 @@ if (_attack && _can_attack && _cooldown_ok) {
 
     var _atk_dir = _wall_sliding ? -wall_dir : face;
 
-    show_debug_message("wall_sliding: " + string(_wall_sliding) + " | wall_dir: " + string(wall_dir) + " | atk_dir: " + string(_atk_dir)); // DEBUG TEMPORAL
-
     if (!_wall_sliding) {
         estado = "attack";
     }
 
     if (arma == "espada") {
+        var _sword_scale = 1.5; // tamaño de la espada, ajusta a tu gusto
         var _sword = instance_create_layer(x + (_atk_dir * 15), y - 15, "Instances", obj_sword);
-        _sword.image_xscale = -_atk_dir;
+        _sword.image_xscale = -_atk_dir * _sword_scale;
+        _sword.image_yscale = _sword_scale;
         _sword.lifetime = attack_duration;
         _sword.owner = id;
     } else if (arma == "disparo") {
@@ -229,3 +316,23 @@ if (estado == "wall_slide") {
         }
     }
 }
+
+// --- Cámara sigue al jugador suavemente ---
+var _cam = view_camera[0];
+var _view_w = camera_get_view_width(_cam);
+var _view_h = camera_get_view_height(_cam);
+
+var _target_cam_x = x - _view_w / 2;
+var _target_cam_y = y - _view_h / 2;
+
+// Límites para que la cámara no se salga de la sala
+_target_cam_x = clamp(_target_cam_x, 0, room_width - _view_w);
+_target_cam_y = clamp(_target_cam_y, 0, room_height - _view_h);
+
+var _cam_x = camera_get_view_x(_cam);
+var _cam_y = camera_get_view_y(_cam);
+
+_cam_x += (_target_cam_x - _cam_x) * cam_smooth;
+_cam_y += (_target_cam_y - _cam_y) * cam_smooth;
+
+camera_set_view_pos(_cam, _cam_x, _cam_y);
