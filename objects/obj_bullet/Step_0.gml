@@ -10,5 +10,9 @@ if (instance_exists(obj_boss) && place_meeting(x, y, obj_boss)) {
 
     if (obj_boss.hp <= 0) {
         obj_boss.hp = 0;
+        if (audio_is_playing(snd_boss_theme)) {
+            audio_stop_sound(snd_boss_theme);
+        }
+        instance_destroy(obj_boss);
     }
 }

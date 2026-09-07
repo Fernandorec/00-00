@@ -53,6 +53,9 @@ if (!invincible && hp > 0) {
 
         if (hp <= 0) {
             hp = 0;
+            if (audio_is_playing(snd_boss_theme)) {
+                audio_stop_sound(snd_boss_theme);
+            }
             room_restart();
         }
     }
@@ -130,7 +133,7 @@ if (_attack && _can_attack && _cooldown_ok) {
     }
 
     if (arma == "espada") {
-        var _sword_scale = 1.5; // tamaño de la espada, ajusta a tu gusto
+        var _sword_scale = 1.5;
         var _sword = instance_create_layer(x + (_atk_dir * 15), y - 15, "Instances", obj_sword);
         _sword.image_xscale = -_atk_dir * _sword_scale;
         _sword.image_yscale = _sword_scale;

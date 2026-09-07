@@ -10,6 +10,7 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"Music","folderPath":"folders/Music.yy","name":"Music","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -39,6 +40,7 @@
     {"id":{"name":"obj_time_pillar","path":"objects/obj_time_pillar/obj_time_pillar.yy",},},
     {"id":{"name":"rm_boss","path":"rooms/rm_boss/rm_boss.yy",},},
     {"id":{"name":"rm_intro","path":"rooms/rm_intro/rm_intro.yy",},},
+    {"id":{"name":"snd_boss_theme","path":"sounds/snd_boss_theme/snd_boss_theme.yy",},},
     {"id":{"name":"Bryan","path":"sprites/Bryan/Bryan.yy",},},
     {"id":{"name":"pisoprueba","path":"sprites/pisoprueba/pisoprueba.yy",},},
     {"id":{"name":"spr_bullet","path":"sprites/spr_bullet/spr_bullet.yy",},},

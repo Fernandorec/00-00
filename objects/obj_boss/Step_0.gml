@@ -197,3 +197,4 @@ image_xscale = -face;
 
 // --- Rotación compartida de los rayos ---
 lightning_rotation += lightning_rotation_speed;
+
