@@ -38,24 +38,28 @@ bullet_spawned = false;
 
 // --- Cooldown de ataque ---
 attack_cooldown = 0;
-attack_cooldown_max = 20; // ajusta a tu gusto
+attack_cooldown_max = 20;
 
 // --- Congelamiento ---
 frozen = false;
 freeze_timer = 0;
 
 // --- Cámara ---
-cam_smooth = 0.1; // qué tan suave sigue la cámara (más bajo = más suave/lento)
+cam_smooth = 0.1;
 
 // --- Sistema de vida ---
 hp = 75;
 max_hp = 75;
 invincible = false;
 invincible_timer = 0;
-invincible_duration = 60; // 1 segundo de i-frames
+invincible_duration = 60;
 pillar_hit = false;
 lightning_hit = false;
-
-spd_base = 4;           // tu velocidad normal
-spd_multiplier = 1;     // 1 = normal, <1 = lento, >1 = rápido
+spd_base = 4;
+spd_multiplier = 1;
 spd_multiplier_target = 1;
+
+// --- Secuencia de muerte ---
+is_dead = false;
+death_timer = 0;
+death_duration = 3 * room_speed;

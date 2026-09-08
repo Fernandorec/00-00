@@ -1,3 +1,18 @@
+// --- Secuencia de muerte ---
+if (is_dead) {
+    death_timer -= 1;
+    hsp = 0;
+    vsp = 0;
+
+    show_debug_message("death_timer: " + string(death_timer));
+
+    if (death_timer <= 0) {
+        show_debug_message("Yendo al menu");
+        room_goto(rm_menu);
+    }
+    exit;
+}
+
 // --- Multiplicador de velocidad por zonas de tiempo ---
 spd_multiplier = lerp(spd_multiplier, spd_multiplier_target, 0.1);
 spd_multiplier_target = 1; // se resetea cada frame; las zonas lo vuelven a fijar si sigues dentro
@@ -60,7 +75,9 @@ if (!invincible && hp > 0) {
             if (audio_is_playing(snd_boss_theme)) {
                 audio_stop_sound(snd_boss_theme);
             }
-            room_restart();
+            is_dead = true;
+            death_timer = death_duration;
+            audio_play_sound(snd_death, 1, false);
         }
     }
 }
@@ -184,7 +201,7 @@ if (_jump && on_ground && estado != "attack") {
     }
 } else if (_jump && _wall_sliding) {
     vsp = wall_jump_vsp;
-	hsp = -wall_dir * wall_jump_hsp;
+    hsp = -wall_dir * wall_jump_hsp;
     face = -wall_dir;
     estado = "jump";
     _dash_jump = true;
@@ -248,7 +265,6 @@ on_platform = false;
 
 if (vsp >= 0 && place_meeting(x, y + vsp, obj_platform)) {
     var _plat = instance_place(x, y + vsp, obj_platform);
-    // Compara dónde estaban los pies el frame ANTERIOR, no ahora
     if ((yprevious + (bbox_bottom - y)) <= _plat.bbox_top + 4) {
         while (!place_meeting(x, y + sign(vsp), obj_platform)) {
             y += sign(vsp);
@@ -279,6 +295,25 @@ if (!on_ground && vsp >= 0) {
     if (_plat_check != noone && bbox_bottom <= _plat_check.bbox_top + 4) {
         on_ground = true;
     }
+}
+
+// --- Kill zones ---
+if (place_meeting(x, y, obj_kill_zone)) {
+    hp = 0;
+    if (audio_is_playing(snd_boss_theme)) {
+        audio_stop_sound(snd_boss_theme);
+    }
+    is_dead = true;
+    death_timer = death_duration;
+    audio_play_sound(snd_death, 1, false);
+}
+
+// --- Llave: lleva a rm_intro al tocarla ---
+if (place_meeting(x, y, obj_key)) {
+    if (audio_is_playing(snd_boss_theme)) {
+        audio_stop_sound(snd_boss_theme);
+    }
+    room_goto(rm_intro);
 }
 
 // --- Actualizar estado (si no está en dash ni attack) ---
@@ -365,4 +400,3 @@ _cam_x += (_target_cam_x - _cam_x) * cam_smooth;
 _cam_y += (_target_cam_y - _cam_y) * cam_smooth;
 
 camera_set_view_pos(_cam, _cam_x, _cam_y);
-
