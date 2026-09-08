@@ -24,7 +24,7 @@
   "height":32,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"219f2b56-9903-4686-a299-a88f0f2f21a2","blendMode":0,"displayName":"default","isLocked":false,"name":"219f2b56-9903-4686-a299-a88f0f2f21a2","opacity":74.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"219f2b56-9903-4686-a299-a88f0f2f21a2","blendMode":0,"displayName":"default","isLocked":false,"name":"219f2b56-9903-4686-a299-a88f0f2f21a2","opacity":65.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"Time_force_down",
   "nineSlice":null,
