@@ -1,0 +1,1 @@
+texto="El campo de tiempo te acelera si el campo se mueve hacia arriba"

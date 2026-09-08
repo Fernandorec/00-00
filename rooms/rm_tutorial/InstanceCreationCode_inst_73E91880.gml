@@ -1,0 +1,1 @@
+texto = "Si su animacion se desplaza hacia abajo el campo te realentiza"

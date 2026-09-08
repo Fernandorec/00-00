@@ -2,8 +2,9 @@
 hsp = 0;
 vsp = 0;
 move_spd = 4;
-grav = 0.5;
+grav = 0.43;
 jump_spd = -9;
+jump_buffer = 0;
 face = 1;
 
 // --- Estado del personaje ---

@@ -1,0 +1,1 @@
+texto = "Puedes cambiar tu arma presionando Q"

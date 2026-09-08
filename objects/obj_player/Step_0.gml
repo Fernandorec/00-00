@@ -112,7 +112,11 @@ if (frozen) {
 // --- Input ---
 var _left  = keyboard_check(ord("A"));
 var _right = keyboard_check(ord("D"));
-var _jump  = keyboard_check_pressed(vk_space);
+
+if (keyboard_check_pressed(vk_space)) {
+    jump_buffer = 6; // El juego "recordará" el salto por 6 frames
+}
+
 var _dash  = keyboard_check_pressed(ord("L"));
 var _switch_weapon = keyboard_check_pressed(ord("Q"));
 var _attack = keyboard_check_pressed(ord("K"));
@@ -184,29 +188,36 @@ if (attack_cooldown > 0) attack_cooldown -= 1;
 // --- Salto ---
 var _dash_jump = false;
 
-if (_jump && on_ground && estado != "attack") {
-    vsp = jump_spd;
-    on_ground = false;
+if (jump_buffer > 0) {
+    jump_buffer -= 1; // Restamos tiempo de memoria cada frame
 
-    if (estado == "dash") {
-        estado = "jump";
-        dash_cooldown = dash_cooldown_max;
-        _dash_jump = true;
+    if (on_ground && estado != "attack") {
+        vsp = jump_spd;
+        on_ground = false;
+        jump_buffer = 0; // Como ya saltó, vaciamos la memoria
 
-        if (_move == face) {
-            hsp = face * dash_spd * dash_jump_boost;
-        } else {
-            hsp = face * dash_spd;
+        if (estado == "dash") {
+            estado = "jump";
+            dash_cooldown = dash_cooldown_max;
+            _dash_jump = true;
+
+            if (_move == face) {
+                hsp = face * dash_spd * dash_jump_boost;
+            } else {
+                hsp = face * dash_spd;
+            }
         }
+    } 
+    else if (_wall_sliding) {
+        vsp = wall_jump_vsp;
+        hsp = -wall_dir * wall_jump_hsp;
+        face = -wall_dir;
+        estado = "jump";
+        _dash_jump = true;
+        wall_jump_lock = wall_jump_lock_max;
+        _wall_sliding = false;
+        jump_buffer = 0; // Vaciamos la memoria tras el wall jump
     }
-} else if (_jump && _wall_sliding) {
-    vsp = wall_jump_vsp;
-    hsp = -wall_dir * wall_jump_hsp;
-    face = -wall_dir;
-    estado = "jump";
-    _dash_jump = true;
-    wall_jump_lock = wall_jump_lock_max;
-    _wall_sliding = false;
 }
 
 // --- Movimiento horizontal normal ---
@@ -283,10 +294,6 @@ if (place_meeting(x, y + vsp, obj_solid)) {
 }
 y += vsp;
 
-// --- Redondear posición ---
-x = round(x);
-y = round(y);
-
 // --- Recalcular on_ground ---
 on_ground = place_meeting(x, y+1, obj_solid) || on_platform;
 
@@ -314,6 +321,11 @@ if (place_meeting(x, y, obj_key)) {
         audio_stop_sound(snd_boss_theme);
     }
     room_goto(rm_intro);
+}
+
+// ---gates---
+if(place_meeting(x, y, obj_gate)){
+    room_goto(rm_menu);
 }
 
 // --- Actualizar estado (si no está en dash ni attack) ---

@@ -1,0 +1,1 @@
+texto="Puedes saltar en paredes si presionas espacio y te pegas a ella."

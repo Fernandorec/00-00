@@ -19,5 +19,5 @@ draw_rectangle(_bar_x, _bar_y, _bar_x + _bar_w, _bar_y + _bar_h, true);
 
 // Texto opcional con el nombre del jefe
 draw_set_halign(fa_center);
-draw_text(_bar_x + _bar_w/2, _bar_y - 16, "COPY X");
+draw_text(_bar_x + _bar_w/2, _bar_y - 16, "JENOVA");
 draw_set_halign(fa_left);

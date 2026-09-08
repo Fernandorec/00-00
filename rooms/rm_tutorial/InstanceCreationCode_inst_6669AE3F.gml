@@ -1,0 +1,1 @@
+texto = "Puedes atacar con K."
